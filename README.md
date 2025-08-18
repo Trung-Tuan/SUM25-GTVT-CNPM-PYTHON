@@ -6,28 +6,28 @@
     │   └── run_postgres.sh
     ├── src
     │   ├── api
-    │   │   ├── controllers
+    │   │   ├── controllers # bussiness logic ở đây
     │   │   │   └── ...  # controllers for the api
     │   │   ├── schemas
     │   │   │   └── ...  # Marshmallow schemas
-    │   │   ├── middleware.py
+    │   │   ├── middleware.py # ghi log ở đây
     │   │   ├── responses.py
     │   │   └── requests.py
     │   ├── infrastructure
-    │   │   ├── services
+    │   │   ├── services 
     │   │   │   └── ...  # Services that use third party libraries or services (e.g. email service)
     │   │   ├── databases
     │   │   │   └── ...  # Database adapaters and initialization
-    │   │   ├── repositories
+    │   │   ├── repositories # xử lý những vấn đề liên quan tới databases
     │   │   │   └── ...  # Repositories for interacting with the databases
     │   │   └── models
     │   │   │   └── ...  # Database models
-    │   ├── domain
+    │   ├── domain # chứa các object DTO # đưa json package --> object 
     │   │   ├── constants.py
     │   │   ├── exceptions.py
     │   │   ├── models
     │   │   │   └── ...  # Business logic models
-    │   ├── services
+    │   ├── services # lớp trung gian giữa controller và repositories
     │   │    └── ...  # Services for interacting with the domain (business logic)
     │   ├── app.py
     │   ├── config.py

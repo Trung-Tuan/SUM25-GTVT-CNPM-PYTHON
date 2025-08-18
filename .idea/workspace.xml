@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2e05ce69-da7b-47e3-8daa-685ed8860974" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/databases/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrastructure/databases/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/models/appointment_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/models/consultant_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/models/course_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/models/course_register_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/models/feedback_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/models/program_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/models/survey_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/models/todo_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrastructure/models/user_model.py" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="31S171mpxY51BTjDR3kTm5bpe9d" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-fb887030ada0-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.21565.199" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2e05ce69-da7b-47e3-8daa-685ed8860974" name="Changes" comment="" />
+      <created>1755502489339</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1755502489339</updated>
+    </task>
+    <servers />
+  </component>
+</project>
