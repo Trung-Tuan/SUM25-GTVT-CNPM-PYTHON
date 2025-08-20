@@ -5,9 +5,7 @@ class Revenues(Base):
     __tablename__ = 'revenues'
     __table_args__ = {'extend_existing': True}
 
-    revenue_id = Column(String(255), primary_key=True)
-    supplier_id = Column(String(255), nullable=False)
-    order_id = Column(String(255), nullable=False)
+    revenue_id = Column(Integer, primary_key=True)
     revenue_type = Column(String(100), nullable=False)
     gross_amount = Column(DECIMAL(10, 2), nullable=False)
     platform_fee = Column(DECIMAL(10, 2), nullable=False)
@@ -17,5 +15,5 @@ class Revenues(Base):
     payout_date = Column(DateTime)
     created_at = Column(DateTime, nullable=False)
 
-    supplier_id_fk = Column(String(255), ForeignKey('suppliers.id'))
-    order_id_fk = Column(String(255), ForeignKey('orders.id'))
+    supplier_id = Column(Integer, ForeignKey('flask_user.id'))
+    order_id = Column(Integer, ForeignKey('orders.id'))

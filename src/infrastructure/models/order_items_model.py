@@ -9,7 +9,6 @@ class OrderItems(Base):
 
     quantity = Column(Integer, nullable=False)
     unit_price = Column(Float, nullable=False)
-    subtotal = Column(Float, nullable=False) # Tổng tiền trước thuế
     item_type = Column(String(50), nullable=False)  # 'rent', 'buy'
     return_status = Column(String(50))  # 'pending', 'returned', 'damaged'
     days_overdue = Column(Integer)  # Số ngày quá hạn nếu có
