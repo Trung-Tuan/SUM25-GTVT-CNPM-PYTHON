@@ -10,3 +10,5 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 session = SessionLocal()
 def init_mssql(app):
     Base.metadata.create_all(bind=engine)
+def get_db_session():
+    return SessionLocal()

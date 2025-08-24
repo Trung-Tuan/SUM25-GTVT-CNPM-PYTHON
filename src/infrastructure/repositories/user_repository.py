@@ -1,25 +1,38 @@
-from domain.models.itodo_repository import ITodoRepository
-from domain.models.todo import Todo
-from typing import List, Optional
-from dotenv import load_dotenv
-import os
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
-from config import Config
-from sqlalchemy import Column, Integer, String, DateTime,Boolean
-from infrastructure.databases import Base
+from domain.models.iuser_repository import IUserRepository
+from infrastructure.models.users_model import User
+from sqlalchemy.orm import Session
+from typing import Optional, List
 
-load_dotenv()
 
-class UserModel(Base):
-    __tablename__ = 'flask_user'
-    __table_args__ = {'extend_existing': True}  # Thêm dòng này
-
-    id = Column(Integer, primary_key=True)
-    user_name = Column(String(18), nullable=False)
-    password = Column(String(18), nullable=False)
-    description = Column(String(255), nullable=True)
-    status = Column(Boolean, nullable=False)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime) 
+class UserRepository(IUserRepository):
+    def __init__(self, session: Session):
+        self.session = session
     
+    def add(self, user: User) -> User:
+        self.session.add(user)
+        self.session.commit() # lưu vào DB
+        self.session.refresh(user) 
+        return user
+    
+    def get_by_id(self, user_id: int) -> Optional[User]:
+        return self.session.query(User).filter(User.id == user_id).first()
+    
+    def get_by_user_name(self, user_name: str) -> Optional[User]:
+        return self.session.query(User).filter(User.user_name == user_name).first()
+    
+    def get_by_user_email(self, email: str) -> Optional[User]:
+        return self.session.query(User).filter(User.email == email).first() # SELECT * FROM users WHERE email = 'email_value'  LIMIT 1;
+    
+    def list(self) -> List[User]:
+        return self.session.query(User).all() # SELECT * FROM users;
+    
+    def update(self, user: User) -> User:
+        self.session.merge(user) # update hoặc insert
+        self.session.commit()
+        return user
+    
+    def delete(self, user_id: int) -> None:
+        user = self.get_by_id(user_id)
+        if user:
+            self.session.delete(user)
+            self.session.commit()

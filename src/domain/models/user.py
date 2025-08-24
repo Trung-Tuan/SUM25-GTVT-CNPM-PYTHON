@@ -1,12 +1,15 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
-from infrastructure.databases.base import Base
 
 class User:
     
-    def __innit__(self, user_name: str, password: str, description: str = None, status: bool = True):
+    def __init__(self, user_name: str, password: str, email: str = None, phone: str = None, address: str = None, is_verified: bool = False, user_type: str = "renter",reward_points: int = 0, id: int = None):
+        self.id = id
         self.user_name = user_name
         self.password = password
-        self.description = description
-        self.status = status
+        self.email = email
+        self.phone = phone
+        self.address = address
+        self.is_verified = is_verified
+        self.user_type = user_type
+        self.reward_points = reward_points
         self.created_at = None
         self.updated_at = None
