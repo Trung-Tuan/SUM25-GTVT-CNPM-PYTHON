@@ -83,7 +83,7 @@
     
     # SQL Server settings
     DB_USER=sa
-    DB_PASSWORD=Aa@123456
+    DB_PASSWORD=@@Aa1234
     DB_HOST=127.0.0.1
     DB_PORT=1433
     DB_NAME=FlaskApiDB
