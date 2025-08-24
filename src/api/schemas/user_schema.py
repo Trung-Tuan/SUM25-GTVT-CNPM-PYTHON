@@ -9,13 +9,15 @@ class RegisterSchema(Schema):
     password = fields.Str(required=True, validate=validate.Length(min=6))
     email = fields.Email(required=False, allow_none=True)
 
-class UserResponseSchema(Schema):
-    
+class UserDataSchema(Schema):
     id = fields.Int()
     user_name = fields.Str()
     email = fields.Email()
+    phone = fields.Str()
+    address = fields.Str()
     is_verified = fields.Bool()
     user_type = fields.Str()
+    reward_points = fields.Int()
 
 def validate_login_data(data: dict) -> dict:
     schema = LoginSchema()
@@ -42,3 +44,5 @@ def serialize_user(user):
         'user_type': user.user_type,
         'reward_points': user.reward_points
     }
+
+

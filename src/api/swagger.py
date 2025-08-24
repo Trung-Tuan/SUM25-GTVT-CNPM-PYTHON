@@ -1,7 +1,7 @@
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 from apispec_webframeworks.flask import FlaskPlugin
-from api.schemas.user_schema import RegisterSchema, LoginSchema, ChangePassword, UserDataSchema 
+# from api.schemas.user_schema import RegisterSchema, LoginSchema, ChangePassword, UserDataSchema
 
 spec = APISpec(
     title="Login API",
@@ -11,7 +11,7 @@ spec = APISpec(
 )
 
 # Đăng ký schema để tự động sinh model
-spec.components.schema("Register", schema=RegisterSchema)
-spec.components.schema("Login", schema=LoginSchema)
-spec.components.schema("ChangePassword", schema=ChangePassword)
-spec.components.schema("UserData", schema=UserDataSchema)
+# spec.components.schema("Register", schema=RegisterSchema)
+# spec.components.schema("Login", schema=LoginSchema)
+# spec.components.schema("ChangePassword", schema=ChangePassword)
+# spec.components.schema("UserData", schema=UserDataSchema)
