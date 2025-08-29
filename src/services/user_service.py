@@ -17,7 +17,7 @@ class UserService:
             return None
         return user
     
-    def register(self, user_name: str, password: str, email: str = None) -> Optional[User]:
+    def register(self, user_name: str, password: str, email: str) -> Optional[User]:
         if self.repository.get_by_user_name(user_name):
             return None 
         

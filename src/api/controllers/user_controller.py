@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from infrastructure.databases.mssql import get_db_session
+from api.schemas.user_schema import RegisterSchema, LoginSchema, ForgotPasswordSchema
 from infrastructure.repositories.user_repository import UserRepository
 from services.user_service import UserService
 
@@ -23,12 +24,15 @@ def format_user_data(user):
 @user_bp.route("/register", methods=["POST"])
 def register():
     try:
-        data = request.json
+        schema = RegisterSchema()
+        data = schema.load(request.json)
+
         service = get_service()
         
         user = service.register(
             user_name=data['user_name'],
             password=data['user_password'],
+            # confirm_password=data['confirm_password'],
             email=data['email']
         )
         
@@ -38,12 +42,14 @@ def register():
         return jsonify({"success": True, "message": "Register successful"}), 201
         
     except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 400
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @user_bp.route("/login", methods=["POST"])
 def login():
     try:
-        data = request.json
+        schema = LoginSchema()
+        data = schema.load(request.json)
+
         service = get_service()
         
         user = service.login(data['user_name'], data['user_password'])
@@ -87,7 +93,10 @@ def update_user():
 @user_bp.route("/forgot-password", methods=["POST"])
 def forgot_password():
     try:
-        email = request.json.get("email")
+        schema = ForgotPasswordSchema()
+        data = schema.load(request.json)
+        email = data['email']
+
         service = get_service()
         
         if not service.get_user_by_email(email):

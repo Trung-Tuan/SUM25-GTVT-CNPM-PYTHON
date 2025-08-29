@@ -10,7 +10,7 @@ spec = APISpec(
     plugins=[FlaskPlugin(), MarshmallowPlugin()],
 )
 
-# Đăng ký schema để tự động sinh model
+
 # spec.components.schema("Register", schema=RegisterSchema)
 # spec.components.schema("Login", schema=LoginSchema)
 # spec.components.schema("ChangePassword", schema=ChangePassword)
