@@ -42,7 +42,7 @@ function App() {
         body: JSON.stringify({
           user_name: regUser,
           user_password: regPass,
-          confirm_password: regPass,
+          // confirm_password: regPass,
           email: regEmail
         })
       });
