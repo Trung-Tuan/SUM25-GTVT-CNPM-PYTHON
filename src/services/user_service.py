@@ -1,4 +1,4 @@
-from infrastructure.models.users_model import User
+from domain.models.user import User
 from domain.models.iuser_repository import IUserRepository
 from typing import Optional
 class UserService:

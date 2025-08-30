@@ -4,7 +4,7 @@ from api.schemas.user_schema import RegisterSchema, LoginSchema, ForgotPasswordS
 from infrastructure.repositories.user_repository import UserRepository
 from services.user_service import UserService
 
-user_bp = Blueprint("user", __name__, url_prefix="/api")
+user_bp = Blueprint("user", __name__, url_prefix="/api") 
 
 def get_service():
     db = get_db_session()
@@ -37,7 +37,7 @@ def register():
         )
         
         if not user:
-            return jsonify({"success": False, "message": "Username already exists"}), 400
+            return jsonify({"success": False, "message": "Tài khoản đã tồn tại"}), 400
         
         return jsonify({"success": True, "message": "Register successful"}), 201
         

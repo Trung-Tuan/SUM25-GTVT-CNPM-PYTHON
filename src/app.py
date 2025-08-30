@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from api.swagger import spec
-from api.controllers.user_controller import user_bp #delete this line if not needed
+from api.controllers.user_controller import user_bp # 1.
 from api.middleware import middleware
 from api.responses import success_response
 from infrastructure.databases import init_db
