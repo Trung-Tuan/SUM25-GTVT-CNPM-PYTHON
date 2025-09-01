@@ -19,11 +19,9 @@ class UserRepository(IUserRepository):
         self.session.commit()
         self.session.refresh(user_model)
         return User(
-            id=user_model.id,
             user_name=user_model.user_name,
             email=user_model.email,
-            password=user_model.password,
-            created_at=user_model.created_at
+            password=user_model.password
         ) # mapping từ ORM -> domain entity
 
     def get_by_id(self, user_id: int) -> Optional[User]:
@@ -45,7 +43,7 @@ class UserRepository(IUserRepository):
             user_name=user_model.user_name,
             email=user_model.email,
             password=user_model.password,
-            created_at=user_model.created_at
+
         ) if user_model else None
 
     def get_by_user_email(self, email: str) -> Optional[User]:
@@ -55,7 +53,7 @@ class UserRepository(IUserRepository):
             user_name=user_model.user_name,
             email=user_model.email,
             password=user_model.password,
-            created_at=user_model.created_at
+
         ) if user_model else None
 
     def list(self) -> List[User]:
@@ -66,7 +64,7 @@ class UserRepository(IUserRepository):
                 user_name=u.user_name,
                 email=u.email,
                 password=u.password,
-                created_at=u.created_at
+
             ) for u in user_models
         ]
 

@@ -16,22 +16,25 @@ function App() {
       const res = await fetch("http://localhost:6868/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_name: loginUser, user_password: loginPass })
+        body: JSON.stringify({
+          user_name: loginUser,
+          user_password: loginPass
+        })
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem("token", data.token);
         alert("Đăng nhập thành công!");
-        window.location.href = "home.html";
+        //showLogin();
       } else {
-        alert(data.message || "Sai tài khoản hoặc mật khẩu!");
+        alert(data.message || data.error || "Sai tài khoản hoặc mật khẩu!");
       }
     } catch (err) {
       alert("Không kết nối được server!");
       console.error(err);
     }
+
   };
 
   const register = async () => {
