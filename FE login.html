@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Cho thuê đồ chơi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            display: flex;
+            width: 400px;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+        }
+
+        .login-left {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .login-left h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .login-left p {
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .login-left input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 14px;
+        }
+
+        .login-left button {
+            width: 100%;
+            padding: 12px;
+            background-color: #1976d2;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-left button:hover {
+            background-color: #1565c0;
+        }
+
+        .login-left a {
+            display: block;
+            margin-top: 10px;
+            text-align: right;
+            font-size: 14px;
+            color: #1976d2;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+
+
+        <div class="login-left" id="loginForm">
+            <h2>Đăng nhập</h2>
+            <p>Đồ chơi giáo dục đa dạng</p>
+            <input type="text" id="loginUser" placeholder="Email hoặc Username" required>
+            <input type="password" id="loginPass" placeholder="Mật khẩu" required>
+            <button onclick="login()">Đăng nhập</button>
+            <a href="#" onclick="showRegister()">Đăng ký</a>
+        </div>
+
+
+        <div class="login-left" id="registerForm" style="display:none;">
+            <h2>Đăng ký</h2>
+            <p>Tạo tài khoản mới để bắt đầu</p>
+            <input type="text" id="regUser" placeholder="Username" required>
+            <input type="email" id="regEmail" placeholder="Email" required>
+            <input type="password" id="regPass" placeholder="Mật khẩu" required>
+            <input type="password" id="regConfirm" placeholder="Xác nhận mật khẩu" required>
+            <button onclick="register()">Đăng ký</button>
+            <a href="#" onclick="showLogin()">Đăng nhập</a>
+        </div>
+
+    </div>
+
+    <script>
+        function showRegister() {
+            document.getElementById("loginForm").style.display = "none";
+            document.getElementById("registerForm").style.display = "block";
+        }
+
+        function showLogin() {
+            document.getElementById("loginForm").style.display = "block";
+            document.getElementById("registerForm").style.display = "none";
+        }
+
+        async function login() {
+            const username = document.getElementById("loginUser").value;
+            const password = document.getElementById("loginPass").value;
+
+            if (!username || !password) {
+                alert("Vui lòng nhập đầy đủ thông tin!");
+                return;
+            }
+
+            try {
+                const res = await fetch("http://localhost:6868/api/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    localStorage.setItem("token", data.token);
+                    alert("Đăng nhập thành công!");
+                    window.location.href = "home.html";
+                } else {
+                    alert(data.message || "Sai tài khoản hoặc mật khẩu!");
+                }
+            } catch (err) {
+                alert("Không kết nối được server!");
+                console.error(err);
+            }
+        }
+
+        async function register() {
+            const username = document.getElementById("regUser").value;
+            const email = document.getElementById("regEmail").value;
+            const password = document.getElementById("regPass").value;
+            const confirm = document.getElementById("regConfirm").value;
+
+            if (!username || !email || !password || !confirm) {
+                alert("Vui lòng nhập đầy đủ thông tin!");
+                return;
+            }
+
+            if (password !== confirm) {
+                alert("Mật khẩu xác nhận không khớp!");
+                return;
+            }
+
+            try {
+                const res = await fetch("http://localhost:6868/api/auth/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, email, password })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    alert("Đăng ký thành công!");
+                    showLogin();
+                } else {
+                    alert(data.message || "Đăng ký thất bại!");
+                }
+            } catch (err) {
+                alert("Không kết nối được server!");
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+
+</html>
