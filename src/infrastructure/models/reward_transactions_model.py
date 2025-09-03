@@ -11,5 +11,5 @@ class Transactions(Base):
     reason = Column(Text)
     created_at = Column(DateTime, nullable=False)
 
-    user_id_fk = Column(Integer, ForeignKey('flask_user.id'))
+    user_id_fk = Column(Integer, ForeignKey('Users.id'))
     related_order_id_fk = Column(Integer, ForeignKey('orders.id'))

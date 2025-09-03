@@ -14,6 +14,7 @@ def format_user_data(user):
     return {
         "user_id": user.id,              
         "user_name": user.user_name,
+        "full_name": user.full_name,
         "email": user.email,
         "phone": user.phone,             
         "address": user.address,
@@ -71,14 +72,7 @@ def update_user():
         service = get_service()
         
         updated_user = service.update_user(
-            data['user_id'], 
-            data['user_name'], 
-            data['full_name'],
-            data['user_password'], 
-            data['address'], 
-            data['email'],
-            data['phone_number'], 
-            data['role_name']
+            format_user_data(data)
         )
         
         if not updated_user:

@@ -21,5 +21,5 @@ class Orders(Base):
     shipping_address = Column(String(255))
     created_at = Column(DateTime, nullable=False)
 
-    renter_id = Column(Integer, ForeignKey('flask_user.id'))  # Người thuê
-    supplier_id = Column(Integer, ForeignKey('flask_user.id'))  # Người cung cấp
+    renter_id = Column(Integer, ForeignKey('Users.id'))  # Người thuê
+    supplier_id = Column(Integer, ForeignKey('Users.id'))  # Người cung cấp

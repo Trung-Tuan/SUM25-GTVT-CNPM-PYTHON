@@ -12,7 +12,7 @@ class Reviews(Base):
     is_verified = Column(Boolean)
     created_at = Column(DateTime, nullable=False)
 
-    reviewer_id = Column(Integer, ForeignKey('flask_user.id'))
-    reviewed_id = Column(Integer, ForeignKey('flask_user.id'))
+    reviewer_id = Column(Integer, ForeignKey('Users.id'))
+    reviewed_id = Column(Integer, ForeignKey('Users.id'))
     toy_id = Column(Integer, ForeignKey('toys.id'))
     order_id = Column(Integer, ForeignKey('orders.id'))

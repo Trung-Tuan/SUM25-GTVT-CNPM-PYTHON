@@ -15,5 +15,5 @@ class Revenues(Base):
     payout_date = Column(DateTime)
     created_at = Column(DateTime, nullable=False)
 
-    supplier_id = Column(Integer, ForeignKey('flask_user.id'))
+    supplier_id = Column(Integer, ForeignKey('Users.id'))
     order_id = Column(Integer, ForeignKey('orders.id'))

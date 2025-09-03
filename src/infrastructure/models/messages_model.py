@@ -15,7 +15,7 @@ class Messages(Base):
     is_read = Column(Boolean)
     sent_at = Column(DateTime, nullable=False)
 
-    sender_id = Column(Integer, ForeignKey('flask_user.id'), nullable=False)
-    receiver_id = Column(Integer, ForeignKey('flask_user.id'), nullable=False)
+    sender_id = Column(Integer, ForeignKey('Users.id'), nullable=False)
+    receiver_id = Column(Integer, ForeignKey('Users.id'), nullable=False)
     related_toy_id = Column(Integer, ForeignKey('toys.id'))
     related_order_id = Column(Integer, ForeignKey('orders.id'))

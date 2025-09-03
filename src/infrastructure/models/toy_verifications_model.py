@@ -12,5 +12,5 @@ class Verifications(Base):
     verified_by = Column(String(255))  # Người thực hiện xác minh
     verified_at = Column(DateTime)  # Thời gian xác minh
 
-    admin_id = Column(Integer, ForeignKey('flask_user.id'))   
+    admin_id = Column(Integer, ForeignKey('Users.id'))   
     toy_id = Column(Integer, ForeignKey('toys.id')) 
