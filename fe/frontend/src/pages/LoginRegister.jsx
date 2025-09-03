@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginRegister() {
     const [isLogin, setIsLogin] = useState(true);
+    const navigate = useNavigate();
 
     // state cho login
     const [loginUser, setLoginUser] = useState("");
@@ -31,10 +33,10 @@ export default function LoginRegister() {
 
             const data = await res.json();
 
-            if (res.ok) {
+            if (res == 200) {
                 localStorage.setItem("token", data.token);
                 alert("Đăng nhập thành công!");
-                window.location.href = "home.html"; // sau này bạn đổi sang React Router navigate
+                navigate("/"); // Chuyển hướng đến trang chủ (chưa xong)
             } else {
                 alert(data.message || "Sai tài khoản hoặc mật khẩu!");
             }
@@ -60,7 +62,7 @@ export default function LoginRegister() {
             const res = await fetch("http://localhost:6868/api/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: regUser, email: regEmail, password: regPass }),
+                body: JSON.stringify({ user_name: regUser, email: regEmail, user_password: regPass }),
             });
 
             const data = await res.json();
@@ -106,7 +108,7 @@ export default function LoginRegister() {
                         <p style={{ marginBottom: "30px", color: "#555" }}>Đồ chơi giáo dục đa dạng</p>
                         <input
                             type="text"
-                            placeholder="Email hoặc Username"
+                            placeholder="Username"
                             value={loginUser}
                             onChange={(e) => setLoginUser(e.target.value)}
                             style={inputStyle}

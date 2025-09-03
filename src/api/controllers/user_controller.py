@@ -64,38 +64,3 @@ def login():
         
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
-
-@user_bp.route("/update", methods=["PUT"])
-def update_user():
-    try:
-        data = request.json
-        service = get_service()
-        
-        updated_user = service.update_user(
-            format_user_data(data)
-        )
-        
-        if not updated_user:
-            return jsonify({"success": False, "message": "User not found"}), 404
-        
-        return jsonify({"success": True, "message": "User updated successfully"}), 200
-        
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
-
-@user_bp.route("/forgot-password", methods=["POST"])
-def forgot_password():
-    try:
-        schema = ForgotPasswordSchema()
-        data = schema.load(request.json)
-        email = data['email']
-
-        service = get_service()
-        
-        if not service.get_user_by_email(email):
-            return jsonify({"success": False, "message": "Email not found"}), 404
-        #send OTP
-        return jsonify({"success": True, "message": "OTP sent to email"}), 200
-        
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 400
