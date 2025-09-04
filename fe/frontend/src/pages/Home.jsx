@@ -11,7 +11,7 @@ export default function Homepage() {
     const [searchQuery, setSearchQuery] = useState("")
     const [searchResults, setSearchResults] = useState([])
     const [isSearching, setIsSearching] = useState(false)
-
+    const [token, setToken] = useState(localStorage.getItem("token"))
     // Load dữ liệu khi component mount
     useEffect(() => {
         loadCategories()
@@ -159,6 +159,14 @@ export default function Homepage() {
         }
     }
 
+    const handleLogout = () => {
+        localStorage.removeItem("token")
+        setToken(null)  // cập nhật lại state để UI re-render
+        alert("Đã đăng xuất!")
+        navigate("/")
+    }
+
+
     // NAVIGATE: Chuyển đến trang chi tiết sản phẩm
     const viewProductDetail = (productId) => {
         navigate(`/product/${productId}`)
@@ -248,18 +256,24 @@ export default function Homepage() {
                     </form>
 
                     <nav className="nav">
-                        <button onClick={() => navigate("/")} className="nav-button">
+                        <button onClick={() => navigate("/")} className="btn">
                             Trang chủ
                         </button>
-                        <button onClick={() => document.getElementById("products-section")?.scrollIntoView({ behavior: "smooth" })} className="nav-button">
-                            Sản phẩm
+                        <button onClick={() => document.getElementById("products-section")?.scrollIntoView({ behavior: "smooth" })} className="btn">
+                            Xem sản phẩm
                         </button>
-                        <button onClick={goToCart} className="nav-button">
-                            Giỏ hàng
-                        </button>
-                        <button onClick={goToLogin} className="nav-button">
-                            Đăng nhập
-                        </button>
+
+                        <button onClick={goToCart} className="btn">Giỏ hàng</button>
+                        {token ? (
+                            <button onClick={handleLogout} className="btn">
+                                Đăng xuất
+                            </button>
+                        ) : (
+                            <button onClick={goToLogin} className="btn">
+                                Đăng nhập
+                            </button>
+                        )}
+
                     </nav>
                 </div>
             </header>
@@ -292,7 +306,7 @@ export default function Homepage() {
                 </div>
             </section>
 
-            {/* Featured Products Section */}
+            {/* danh sách sản phẩm nổi bật: */}
             <section className="section">
                 <h3 className="section-title">Sản phẩm nổi bật</h3>
                 <div className="products-grid">

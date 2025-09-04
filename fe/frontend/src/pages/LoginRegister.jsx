@@ -33,12 +33,15 @@ export default function LoginRegister() {
 
             const data = await res.json();
 
-            if (res == 200) {
+            if (res.status == 200) {
                 localStorage.setItem("token", data.token);
                 alert("Đăng nhập thành công!");
                 navigate("/"); // Chuyển hướng đến trang chủ (chưa xong)
-            } else {
+            } else if (res.status == 401) {
                 alert(data.message || "Sai tài khoản hoặc mật khẩu!");
+            }
+            else if (res.status == 500) {
+                alert("Lỗi server, vui lòng thử lại sau!");
             }
         } catch (err) {
             alert("Không kết nối được server!");
