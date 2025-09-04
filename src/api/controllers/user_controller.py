@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from infrastructure.databases.mssql import get_db_session
-from api.schemas.user_schema import RegisterSchema, LoginSchema, ForgotPasswordSchema
+from api.schemas.user_schema import RegisterSchema, LoginSchema
 from infrastructure.repositories.user_repository import UserRepository
 from services.user_service import UserService
 
@@ -59,7 +59,6 @@ def login():
         return jsonify({
             "success": True,
             "message": "Đăng nhập thành công",
-            "user": format_user_data(user)
         }), 200
         
     except Exception as e:

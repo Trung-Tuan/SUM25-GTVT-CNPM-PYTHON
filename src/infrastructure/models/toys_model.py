@@ -5,7 +5,7 @@ class Toys(Base):
     __tablename__ = 'toys'
     __table_args__ = {'extend_existing': True}  # Thêm dòng này
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
 
     name = Column(String(255), nullable=False)
     description = Column(Text)

@@ -1,10 +1,10 @@
+from domain.models.product import Product
+from domain.models.iproduct_repository import IProductRepository
 from typing import List
-from src.domain.models.product import Product
-from src.domain.repositories.product_repository import ProductRepository
 
 class ProductService:
-    def __init__(self, repo: ProductRepository):
-        self.repo = repo
-
-    def get_products(self) -> List[Product]:
-        return self.repo.get_all()
+    def __init__(self, repository: IProductRepository):
+        self.repository = repository
+    
+    def get_all_products(self) -> List[Product]:
+        return self.repository.get_all()
