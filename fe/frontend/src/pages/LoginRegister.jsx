@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/LoginRegister.css";
 
 export default function LoginRegister() {
     const [isLogin, setIsLogin] = useState(true);
@@ -33,21 +34,19 @@ export default function LoginRegister() {
 
             const data = await res.json();
 
-            if (res.status == 200) {
+            if (res.status === 200) {
                 localStorage.setItem("token", data.token);
                 alert("Đăng nhập thành công!");
-                navigate("/"); // Chuyển hướng đến trang chủ (chưa xong)
-            } else if (res.status == 401) {
+                navigate("/");
+            } else if (res.status === 401) {
                 alert(data.message || "Sai tài khoản hoặc mật khẩu!");
-            }
-            else if (res.status == 500) {
+            } else if (res.status === 500) {
                 alert("Lỗi server, vui lòng thử lại sau!");
             }
         } catch (err) {
             alert("Không kết nối được server!");
             console.error(err);
         }
-
     };
 
     const register = async () => {
@@ -83,89 +82,69 @@ export default function LoginRegister() {
     };
 
     return (
-        <div
-            style={{
-                fontFamily: "Arial, sans-serif",
-                backgroundColor: "#ffffff",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100vh",
-                margin: 0,
-            }}
-        >
-            <div
-                style={{
-                    display: "flex",
-                    width: "400px",
-                    backgroundColor: "#fff",
-                    borderRadius: "10px",
-                    overflow: "hidden",
-                    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-                    flexDirection: "column",
-                }}
-            >
+        <div className="login-register-container">
+            <div className="form-box">
                 {isLogin ? (
-                    <div style={{ flex: 1, padding: "40px" }}>
-                        <h2 style={{ marginBottom: "10px", fontSize: "24px" }}>Đăng nhập</h2>
-                        <p style={{ marginBottom: "30px", color: "#555" }}>Đồ chơi giáo dục đa dạng</p>
+                    <div className="form-content">
+                        <h2>Đăng nhập</h2>
+                        <p>Đồ chơi giáo dục đa dạng</p>
                         <input
                             type="text"
                             placeholder="Username"
                             value={loginUser}
                             onChange={(e) => setLoginUser(e.target.value)}
-                            style={inputStyle}
+                            className="input-field"
                         />
                         <input
                             type="password"
                             placeholder="Mật khẩu"
                             value={loginPass}
                             onChange={(e) => setLoginPass(e.target.value)}
-                            style={inputStyle}
+                            className="input-field"
                         />
-                        <button onClick={login} style={buttonStyle}>
+                        <button onClick={login} className="btn-submit">
                             Đăng nhập
                         </button>
-                        <a href="#" onClick={showRegister} style={linkStyle}>
+                        <button type="button" onClick={showRegister} className="switch-link">
                             Đăng ký
-                        </a>
+                        </button>
                     </div>
                 ) : (
-                    <div style={{ flex: 1, padding: "40px" }}>
-                        <h2 style={{ marginBottom: "10px", fontSize: "24px" }}>Đăng ký</h2>
-                        <p style={{ marginBottom: "30px", color: "#555" }}>Tạo tài khoản mới để bắt đầu</p>
+                    <div className="form-content">
+                        <h2>Đăng ký</h2>
+                        <p>Tạo tài khoản mới để bắt đầu</p>
                         <input
                             type="text"
                             placeholder="Username"
                             value={regUser}
                             onChange={(e) => setRegUser(e.target.value)}
-                            style={inputStyle}
+                            className="input-field"
                         />
                         <input
                             type="email"
                             placeholder="Email"
                             value={regEmail}
                             onChange={(e) => setRegEmail(e.target.value)}
-                            style={inputStyle}
+                            className="input-field"
                         />
                         <input
                             type="password"
                             placeholder="Mật khẩu"
                             value={regPass}
                             onChange={(e) => setRegPass(e.target.value)}
-                            style={inputStyle}
+                            className="input-field"
                         />
                         <input
                             type="password"
                             placeholder="Xác nhận mật khẩu"
                             value={regConfirm}
                             onChange={(e) => setRegConfirm(e.target.value)}
-                            style={inputStyle}
+                            className="input-field"
                         />
-                        <button onClick={register} style={buttonStyle}>
+                        <button onClick={register} className="btn-submit">
                             Đăng ký
                         </button>
-                        <a href="#" onClick={showLogin} style={linkStyle}>
+                        <a href="#" onClick={showLogin} className="switch-link">
                             Đăng nhập
                         </a>
                     </div>
@@ -174,32 +153,3 @@ export default function LoginRegister() {
         </div>
     );
 }
-
-const inputStyle = {
-    width: "100%",
-    padding: "12px",
-    marginBottom: "15px",
-    border: "1px solid #ccc",
-    borderRadius: "25px",
-    fontSize: "14px",
-};
-
-const buttonStyle = {
-    width: "100%",
-    padding: "12px",
-    backgroundColor: "#1976d2",
-    color: "#fff",
-    border: "none",
-    borderRadius: "25px",
-    fontSize: "16px",
-    cursor: "pointer",
-};
-
-const linkStyle = {
-    display: "block",
-    marginTop: "10px",
-    textAlign: "right",
-    fontSize: "14px",
-    color: "#1976d2",
-    textDecoration: "none",
-};
