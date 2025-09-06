@@ -1,4 +1,5 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Float , Text, Boolean
+from datetime import datetime
+from sqlalchemy import Column, Integer, String, DateTime, Float , Text, Boolean, NVARCHAR
 from infrastructure.databases.base import Base
 
 class Toys(Base):
@@ -7,21 +8,34 @@ class Toys(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
 
-    name = Column(String(255), nullable=False)
-    description = Column(Text)
+    name = Column(NVARCHAR(255), nullable=False)
+    description = Column(NVARCHAR(255))
     min_age = Column(Integer)
     max_age = Column(Integer)
-    is_active = Column(Integer, nullable=False)  
-    toy_name = Column(String(255), nullable=False)
-    brand = Column(String(255))
+
+
+    toy_name = Column(NVARCHAR(255), nullable=False)
+    brand = Column(NVARCHAR(255))
+
     total_quantity = Column(Integer, nullable=False)
     available_quantity = Column(Integer, nullable=False)
+
     price_sale = Column(Float)
     price_1_day = Column(Float)
     price_1_week = Column(Float)
     price_2_weeks = Column(Float)
-    deposit_amount = Column(Float)
+
+    is_active = Column(Integer, nullable=False)  
     is_for_sale = Column(Boolean, nullable=False)
     is_for_rent = Column(Boolean, nullable=False)
-    status = Column(String(50), nullable=False)  # 'available', 'rented', 'sold'
-    created_at = Column(DateTime, nullable=False)
+
+    status = Column(NVARCHAR(255), nullable=False)  # 'available', 'rented', 'sold'
+    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow) 
+
+    category = Column(NVARCHAR(255))
+    image = Column(String(255))
+    rating = Column(Float)
+    reviews = Column(Integer)
+
+

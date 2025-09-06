@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, NVARCHAR
 from infrastructure.databases.base import Base
 
 class UserModel(Base):
@@ -11,9 +11,10 @@ class UserModel(Base):
     password = Column(String(30), nullable=False)
     email = Column(String(255), nullable=False, unique=True)
     phone = Column(String(12), nullable=True)
-    address = Column(String(255), nullable=True)
+    address = Column(NVARCHAR(255), nullable=True)
     is_verified = Column(Boolean, nullable=True, default=False)
     user_type = Column(String(50), nullable=False, default="renter")  # 'renter' , 'supplier', 'admin'
     reward_points = Column(Integer, nullable=True, default=0)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow) 
+    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    name = Column(NVARCHAR(255), nullable=True)
