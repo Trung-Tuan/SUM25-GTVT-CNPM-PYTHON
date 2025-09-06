@@ -73,6 +73,12 @@
 
      Truy câp http://localhost:6868/docs
 
+## Run Frontend
+
+ - Bước 1: cd fe
+ - Bước 2: cd frontend
+ - Bước 3: npm install
+ - Bước 4: npm start
 
 
 ## Create file .env in folder /src/.env
