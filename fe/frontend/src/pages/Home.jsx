@@ -4,8 +4,8 @@ import "../styles/Home.css"
 
 export default function Homepage() {
     const navigate = useNavigate()
-    const [products, setProducts] = useState([])
-    const [categories, setCategories] = useState([])
+    // const [products, setProducts] = useState([])
+    // const [categories, setCategories] = useState([])
     const [featuredProducts, setFeaturedProducts] = useState([])
     const [loading, setLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState("")
@@ -14,29 +14,29 @@ export default function Homepage() {
     const [token, setToken] = useState(localStorage.getItem("token"))
     // Load dữ liệu khi component mount
     useEffect(() => {
-        loadCategories()
+        // loadCategories()
         loadFeaturedProducts()
-        loadProducts()
+        // loadProducts()
     }, [])
 
     // API CALL: Lấy danh sách danh mục
-    const loadCategories = async () => {
-        try {
-            const res = await fetch("http://localhost:6868/api/categories", {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-            })
-            const data = await res.json()
+    // const loadCategories = async () => {
+    //     try {
+    //         const res = await fetch("http://localhost:6868/api/categories", {
+    //             method: "GET",
+    //             headers: { "Content-Type": "application/json" },
+    //         })
+    //         const data = await res.json()
 
-            if (res.ok) {
-                setCategories(data.categories || [])
-            } else {
-                console.error("Lỗi khi tải danh mục:", data.message)
-            }
-        } catch (err) {
-            console.error("Không kết nối được server:", err)
-        }
-    }
+    //         if (res.ok) {
+    //             setCategories(data.categories || [])
+    //         } else {
+    //             console.error("Lỗi khi tải danh mục:", data.message)
+    //         }
+    //     } catch (err) {
+    //         console.error("Không kết nối được server:", err)
+    //     }
+    // }
 
     // API CALL: Lấy sản phẩm nổi bật
     const loadFeaturedProducts = async () => {
@@ -48,28 +48,10 @@ export default function Homepage() {
             const data = await res.json()
 
             if (res.ok) {
-                setFeaturedProducts(data.products || [])
+                console.log("API featured products:", data.featured_products);
+                setFeaturedProducts(data.featured_products || [])
             } else {
                 console.error("Lỗi khi tải sản phẩm nổi bật:", data.message)
-            }
-        } catch (err) {
-            console.error("Không kết nối được server:", err)
-        }
-    }
-
-    // API CALL: Lấy tất cả sản phẩm
-    const loadProducts = async () => {
-        try {
-            const res = await fetch("http://localhost:6868/api/products", {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-            })
-            const data = await res.json()
-
-            if (res.ok) {
-                setProducts(data.products || [])
-            } else {
-                console.error("Lỗi khi tải sản phẩm:", data.message)
             }
         } catch (err) {
             console.error("Không kết nối được server:", err)
@@ -77,6 +59,27 @@ export default function Homepage() {
             setLoading(false)
         }
     }
+
+    // API CALL: Lấy tất cả sản phẩm
+    // const loadProducts = async () => {
+    //     try {
+    //         const res = await fetch("http://localhost:6868/api/products", {
+    //             method: "GET",
+    //             headers: { "Content-Type": "application/json" },
+    //         })
+    //         const data = await res.json()
+
+    //         if (res.ok) {
+    //             setProducts(data.products || [])
+    //         } else {
+    //             console.error("Lỗi khi tải sản phẩm:", data.message)
+    //         }
+    //     } catch (err) {
+    //         console.error("Không kết nối được server:", err)
+    //     } finally {
+    //         setLoading(false)
+    //     }
+    // }
 
     // API CALL: Thêm sản phẩm vào giỏ hàng
     const addToCart = async (productId) => {
@@ -289,7 +292,7 @@ export default function Homepage() {
                 </button>
             </section>
 
-            {/* Categories Section */}
+            {/* Categories Section
             <section className="section">
                 <h3 className="section-title">Danh mục sản phẩm</h3>
                 <div className="categories-grid">
@@ -304,7 +307,7 @@ export default function Homepage() {
                         </div>
                     ))}
                 </div>
-            </section>
+            </section> */}
 
             {/* danh sách sản phẩm nổi bật: */}
             <section className="section">
@@ -331,31 +334,8 @@ export default function Homepage() {
                     ))}
                 </div>
             </section>
-
-            {/* All Products Section */}
+            {/* View More Products Button */}
             <section id="products-section" className="section">
-                <h3 className="section-title">Tất cả sản phẩm</h3>
-                <div className="products-grid">
-                    {products.slice(0, 8).map((product) => (
-                        <div key={product.id} className="product-card">
-                            <img
-                                src={product.image || "/placeholder.svg?height=200&width=200&query=toy product"}
-                                alt={product.name}
-                                className="product-image"
-                                onClick={() => viewProductDetail(product.id)}
-                            />
-                            <div className="product-info">
-                                <h4 className="product-name" onClick={() => viewProductDetail(product.id)}>
-                                    {product.name}
-                                </h4>
-                                <p className="product-price">{product.price?.toLocaleString("vi-VN")}đ</p>
-                                <button onClick={() => addToCart(product.id)} className="add-to-cart-button">
-                                    Thêm vào giỏ
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
                 <div className="view-more">
                     <button onClick={() => navigate("/products")} className="view-more-button">
                         Xem tất cả sản phẩm
