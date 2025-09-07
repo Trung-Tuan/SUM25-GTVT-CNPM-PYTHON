@@ -2,6 +2,8 @@ from flask import Flask, jsonify
 from api.swagger import spec
 from api.controllers.user_controller import user_bp # 1.
 from api.controllers.product_controller import product_bp
+from api.controllers.cart_controller import cart_bp
+from api.controllers.order_controller import order_bp
 from api.middleware import middleware
 from api.responses import success_response
 from infrastructure.databases import init_db
@@ -14,6 +16,7 @@ from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
+    app.config.from_object(Config)
     
     CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 
@@ -21,6 +24,8 @@ def create_app():
     # Đăng ký blueprint trước
     app.register_blueprint(user_bp) 
     app.register_blueprint(product_bp)
+    app.register_blueprint(cart_bp)
+    app.register_blueprint(order_bp)
      # Thêm Swagger UI blueprint
     SWAGGER_URL = '/docs'
     API_URL = '/swagger.json'
@@ -43,7 +48,7 @@ def create_app():
     with app.test_request_context():
         for rule in app.url_map.iter_rules():
             # Thêm các endpoint khác nếu cần
-            if rule.endpoint.startswith(('todo.', 'course.', 'user.')):
+            if rule.endpoint.startswith(('todo.', 'course.', 'user.', 'product.', 'cart.', 'order.')):
                 view_func = app.view_functions[rule.endpoint]
                 print(f"Adding path: {rule.rule} -> {view_func}")
                 spec.path(view=view_func)

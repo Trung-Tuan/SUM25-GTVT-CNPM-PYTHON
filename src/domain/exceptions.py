@@ -25,3 +25,33 @@ class ConflictException(CustomException):
     def __init__(self, message="Conflict occurred"):
         self.message = message
         super().__init__(self.message)
+
+class ProductNotFoundError(CustomException):
+    """Exception raised when a product is not found."""
+    def __init__(self, message="Product not found"):
+        self.message = message
+        super().__init__(self.message)
+
+class CartNotFoundError(CustomException):
+    """Exception raised when a cart is not found."""
+    def __init__(self, message="Cart not found"):
+        self.message = message
+        super().__init__(self.message)
+
+class OrderNotFoundError(CustomException):
+    """Exception raised when an order is not found."""
+    def __init__(self, message="Order not found"):
+        self.message = message
+        super().__init__(self.message)
+
+class PaymentFailedError(CustomException):
+    """Exception raised when payment processing fails."""
+    def __init__(self, message="Payment failed"):
+        self.message = message
+        super().__init__(self.message)
+
+class InsufficientStockError(CustomException):
+    """Exception raised when there's insufficient stock."""
+    def __init__(self, message="Insufficient stock"):
+        self.message = message
+        super().__init__(self.message)
