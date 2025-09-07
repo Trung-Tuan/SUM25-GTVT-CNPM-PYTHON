@@ -28,15 +28,15 @@ class CartResponseSchema(Schema):
 
 class AddToCartRequestSchema(Schema):
     product_id = fields.Integer(required=True)
-    quantity = fields.Integer(missing=1)
-    item_type = fields.String(missing='buy')
+    quantity = fields.Integer(load_default=1)
+    item_type = fields.String(load_default='buy')
     rental_days = fields.Integer(allow_none=True)
 
 class UpdateCartItemRequestSchema(Schema):
     product_id = fields.Integer(required=True)
     quantity = fields.Integer(required=True)
-    item_type = fields.String(missing='buy')
+    item_type = fields.String(load_default='buy')
 
 class RemoveFromCartRequestSchema(Schema):
     product_id = fields.Integer(required=True)
-    item_type = fields.String(missing='buy')
+    item_type = fields.String(load_default='buy')

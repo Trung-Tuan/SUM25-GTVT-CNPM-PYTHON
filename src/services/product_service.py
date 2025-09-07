@@ -8,3 +8,9 @@ class ProductService:
     
     def get_all_products(self) -> List[Product]:
         return self.repository.get_all()
+    
+    def get_featured_products(self) -> List[Product]:
+        return self.repository.get_featured()
+
+    def get_all_categories(self) -> List[str]:
+        return self.repository.get_categories()

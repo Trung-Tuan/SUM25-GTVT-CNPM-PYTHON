@@ -51,7 +51,7 @@ class PaymentResponseSchema(Schema):
 
 class CreateOrderRequestSchema(Schema):
     shipping_address = fields.String(required=True)
-    order_type = fields.String(missing='buy')
+    order_type = fields.String(load_default='buy')
 
 class ProcessPaymentRequestSchema(Schema):
     payment_method = fields.String(required=True)

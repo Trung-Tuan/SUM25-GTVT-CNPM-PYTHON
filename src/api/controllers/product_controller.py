@@ -32,3 +32,26 @@ def get_all_products():
         return jsonify({"success": True, "products": products_data }), 200
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+    
+@product_bp.route("/products/featured", methods=["GET"])
+def get_featured_products():
+    try:
+        service = get_service()
+        featured_products = service.get_featured_products()
+        if not featured_products:
+            return jsonify({"success": False, "message": "Không tìm thấy sản phẩm nổi bật nào"}), 404
+        
+        product_schema = ProductResponseSchema(many=True)
+        products_data = product_schema.dump(featured_products)
+        return jsonify({"success": True, "featured_products": products_data}), 200
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+    
+@product_bp.route("/categories", methods=["GET"])
+def get_categories():
+    try:
+        service = get_service()
+        categories = service.get_all_categories()
+        return jsonify({"success": True, "categories": categories}), 200
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500

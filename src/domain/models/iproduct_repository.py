@@ -6,3 +6,10 @@ class IProductRepository(ABC):
     @abstractmethod
     def get_all(self) -> List[Product]:
         pass
+
+    def get_featured(self) -> List[Product]:
+        pass
+
+    def get_categories(self) -> List[str]:
+        pass
+    
