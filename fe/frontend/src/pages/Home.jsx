@@ -176,9 +176,9 @@ export default function Homepage() {
     }
 
     // NAVIGATE: Chuyển đến trang danh mục
-    const viewCategory = (categoryId) => {
-        navigate(`/category/${categoryId}`)
-    }
+    // const viewCategory = (categoryId) => {
+    //     navigate(`/category/${categoryId}`)
+    // }
 
     // NAVIGATE: Chuyển đến trang giỏ hàng
     const goToCart = () => {
