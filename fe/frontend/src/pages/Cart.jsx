@@ -8,15 +8,6 @@ export default function Cart() {
     const [loading, setLoading] = useState(true)
     const [token] = useState(localStorage.getItem("token"))
 
-    // Load giỏ hàng khi component mount
-    useEffect(() => {
-        if (token) {
-            loadCart()
-        } else {
-            setLoading(false)
-        }
-    }, [token, loadCart])
-
     // API CALL: Lấy giỏ hàng của user
     const loadCart = useCallback(async () => {
         try {
@@ -42,6 +33,15 @@ export default function Cart() {
             setLoading(false)
         }
     }, [token])
+
+    // Load giỏ hàng khi component mount
+    useEffect(() => {
+        if (token) {
+            loadCart()
+        } else {
+            setLoading(false)
+        }
+    }, [token, loadCart])
 
     // API CALL: Cập nhật số lượng sản phẩm trong giỏ hàng
     const updateQuantity = async (productId, newQuantity, itemType = 'buy') => {
