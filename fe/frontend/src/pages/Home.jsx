@@ -316,7 +316,7 @@ export default function Homepage() {
                     {featuredProducts.map((product) => (
                         <div key={product.id} className="product-card">
                             <img
-                                src={product.image || "/placeholder.svg?height=200&width=200&query=educational toy"}
+                                src={`/images/${product.image}`}
                                 alt={product.name}
                                 className="product-image"
                                 onClick={() => viewProductDetail(product.id)}

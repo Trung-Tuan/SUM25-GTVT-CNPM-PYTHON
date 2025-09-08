@@ -39,9 +39,9 @@ export default function LoginRegister() {
                 alert("Đăng nhập thành công!");
                 navigate("/");
             } else if (res.status === 401) {
-                alert(data.message || "Sai tài khoản hoặc mật khẩu!");
+                alert("Sai tài khoản hoặc mật khẩu!"); // data.message = message json từ BE
             } else if (res.status === 500) {
-                alert("Lỗi server, vui lòng thử lại sau!");
+                alert("Sai tài khoản hoặc mật khẩu!");
             }
         } catch (err) {
             alert("Không kết nối được server!");
@@ -72,8 +72,11 @@ export default function LoginRegister() {
             if (res.ok) {
                 alert("Đăng ký thành công!");
                 showLogin();
-            } else {
-                alert(data.message || "Đăng ký thất bại!");
+            } else if (res.status === 400) {
+                alert("Đăng ký thất bại!\nTài khoản đã tồn tại");
+            }
+            else {
+                alert("Đăng ký thất bại!\nTài khoản và mật khẩu phải dài hơn 6 ký tự !")
             }
         } catch (err) {
             alert("Không kết nối được server!");
@@ -90,7 +93,7 @@ export default function LoginRegister() {
                         <p>Đồ chơi giáo dục đa dạng</p>
                         <input
                             type="text"
-                            placeholder="Username"
+                            placeholder="Tài khoản"
                             value={loginUser}
                             onChange={(e) => setLoginUser(e.target.value)}
                             className="input-field"
@@ -105,9 +108,9 @@ export default function LoginRegister() {
                         <button onClick={login} className="btn-submit">
                             Đăng nhập
                         </button>
-                        <button type="button" onClick={showRegister} className="switch-link">
+                        <a href="#" onClick={showRegister} className="switch-link">
                             Đăng ký
-                        </button>
+                        </a>
                     </div>
                 ) : (
                     <div className="form-content">
@@ -115,7 +118,7 @@ export default function LoginRegister() {
                         <p>Tạo tài khoản mới để bắt đầu</p>
                         <input
                             type="text"
-                            placeholder="Username"
+                            placeholder="Tài khoản"
                             value={regUser}
                             onChange={(e) => setRegUser(e.target.value)}
                             className="input-field"

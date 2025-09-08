@@ -54,7 +54,7 @@ def login():
         
         user = service.login(data['user_name'], data['user_password'])
         if not user:
-            return jsonify({"success": False, "message": "Sai tài khoản hoặc mật khẩu"}), 401
+            return jsonify({"success": False, "message": "Sai tài khoản hoặc mật khẩu!"}), 401
         
         return jsonify({
             "success": True,

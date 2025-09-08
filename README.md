@@ -95,7 +95,7 @@
     DB_NAME=FlaskApiDB
     
     
-    DATABASE_URI = "mssql+pymssql://sa:Aa%40123456@127.0.0.1:1433/FlaskApiDB"
+    DATABASE_URI = "mssql+pymssql://sa:%40%40123456@127.0.0.1:1433/FlaskApiDB"
 
 ## pull image MS SQL server 
     

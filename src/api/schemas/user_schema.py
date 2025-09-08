@@ -1,12 +1,12 @@
 from marshmallow import Schema, fields, validate, ValidationError, validates_schema
 
 class LoginSchema(Schema):
-    user_name = fields.Str(required=True, validate=validate.Length(min=4))
+    user_name = fields.Str(required=True, validate=validate.Length(min=6))
     user_password = fields.Str(required=True, validate=validate.Length(min=6))
     
         
 class RegisterSchema(Schema):
-    user_name = fields.Str(required=True, validate=validate.Length(min=4))
+    user_name = fields.Str(required=True, validate=validate.Length(min=6))
     user_password = fields.Str(required=True, validate=validate.Length(min=6))
     # confirm_password = fields.Str(required=True, validate=validate.Length(min=6))
     email = fields.Email(required=True)
