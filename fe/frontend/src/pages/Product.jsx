@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import "../styles/Product.css"
 
 export default function Products() {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
+    const searchTimeoutRef = useRef(null)
 
     // State cho dữ liệu
     const [products, setProducts] = useState([])
@@ -17,7 +18,12 @@ export default function Products() {
     const [searchResults, setSearchResults] = useState([])
     const [isSearching, setIsSearching] = useState(false)
 
-    // State cho filter
+    // Filter tạm (chỉ thay đổi khi người dùng chỉnh form)
+    const [tempCategory, setTempCategory] = useState("")
+    const [tempPriceRange, setTempPriceRange] = useState({ min: "", max: "" })
+    const [tempAgeRange, setTempAgeRange] = useState("")
+
+    // Filter thực sự áp dụng (chỉ thay đổi khi bấm Áp dụng)
     const [selectedCategory, setSelectedCategory] = useState("")
     const [priceRange, setPriceRange] = useState({ min: "", max: "" })
     const [selectedAgeRange, setSelectedAgeRange] = useState("")
@@ -33,18 +39,26 @@ export default function Products() {
     // Load dữ liệu khi component mount
     useEffect(() => {
         loadCategories()
-        loadProducts()
+    }, [])
 
-        // Nếu có query từ URL thì tự động search
-        if (searchParams.get("q")) {
-            setSearchQuery(searchParams.get("q"))
+    // Load products khi filters thay đổi
+    useEffect(() => {
+        loadProducts()
+    }, [selectedCategory, priceRange, selectedAgeRange, sortBy, sortOrder])
+
+    // Handle search query từ URL
+    useEffect(() => {
+        const queryFromURL = searchParams.get("q")
+        if (queryFromURL) {
+            setSearchQuery(queryFromURL)
+            // Có thể thêm logic search tại đây nếu cần
         }
     }, [searchParams])
 
     // API CALL: Lấy danh sách danh mục
     const loadCategories = async () => {
         try {
-            const res = await fetch("http://localhost:6868/api/products", {
+            const res = await fetch("http://localhost:6868/api/categories", {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             })
@@ -67,7 +81,6 @@ export default function Products() {
             let url = "http://localhost:6868/api/products?"
             const params = new URLSearchParams()
 
-            // Thêm filter parameters
             if (selectedCategory) params.append("category_id", selectedCategory)
             if (priceRange.min) params.append("min_price", priceRange.min)
             if (priceRange.max) params.append("max_price", priceRange.max)
@@ -156,14 +169,18 @@ export default function Products() {
         }
     }
 
-    // Handle events
+    // Handle search input
     const handleSearchChange = (e) => {
         const query = e.target.value
         setSearchQuery(query)
 
-        // Debounce search
-        clearTimeout(window.searchTimeout)
-        window.searchTimeout = setTimeout(() => {
+        // Clear previous timeout
+        if (searchTimeoutRef.current) {
+            clearTimeout(searchTimeoutRef.current)
+        }
+
+        // Set new timeout
+        searchTimeoutRef.current = setTimeout(() => {
             searchProducts(query)
         }, 500)
     }
@@ -172,19 +189,19 @@ export default function Products() {
         e.preventDefault()
         if (searchQuery.trim()) {
             navigate(`/products?q=${encodeURIComponent(searchQuery)}`)
-            // Reset trang về 1 khi search
             setCurrentPage(1)
         }
     }
 
-    const handleFilterChange = () => {
-        setCurrentPage(1) // Reset về trang 1 khi filter
-        loadProducts()
+    // Áp dụng filter (khi nhấn nút) - FIX: Không reload trang
+    const applyFilters = (e) => {
+        e.preventDefault() // Ngăn form submit
+        setSelectedCategory(tempCategory)
+        setPriceRange(tempPriceRange)
+        setSelectedAgeRange(tempAgeRange)
+        setCurrentPage(1)
+        // Không cần gọi loadProducts() ở đây vì useEffect sẽ handle
     }
-
-    useEffect(() => {
-        handleFilterChange()
-    }, [selectedCategory, priceRange, selectedAgeRange, sortBy, sortOrder])
 
     const handleLogout = () => {
         localStorage.removeItem("token")
@@ -192,12 +209,19 @@ export default function Products() {
         navigate("/")
     }
 
-    const clearFilters = () => {
+    const clearFilters = (e) => {
+        if (e) e.preventDefault() // Ngăn form submit nếu có
+
+        setTempCategory("")
+        setTempPriceRange({ min: "", max: "" })
+        setTempAgeRange("")
         setSelectedCategory("")
         setPriceRange({ min: "", max: "" })
         setSelectedAgeRange("")
         setSortBy("name")
         setSortOrder("asc")
+        setCurrentPage(1)
+        // loadProducts sẽ được gọi tự động qua useEffect
     }
 
     // Navigation functions
@@ -213,6 +237,14 @@ export default function Products() {
         navigate("/login")
     }
 
+    // Handle sort change - FIX: Không gọi loadProducts trực tiếp
+    const handleSortChange = (e) => {
+        const [field, order] = e.target.value.split('-')
+        setSortBy(field)
+        setSortOrder(order)
+        // useEffect sẽ tự động gọi loadProducts
+    }
+
     // Pagination logic
     const indexOfLastProduct = currentPage * productsPerPage
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage
@@ -220,6 +252,15 @@ export default function Products() {
     const totalPages = Math.ceil(products.length / productsPerPage)
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber)
+
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (searchTimeoutRef.current) {
+                clearTimeout(searchTimeoutRef.current)
+            }
+        }
+    }, [])
 
     if (loading) {
         return (
@@ -231,7 +272,7 @@ export default function Products() {
 
     return (
         <div className="products-container">
-            {/* Header - giống như Home */}
+            {/* Header */}
             <header className="header">
                 <div className="header-content">
                     <h1 className="logo" onClick={() => navigate("/")}>Cửa Hàng Đồ Chơi</h1>
@@ -314,72 +355,80 @@ export default function Products() {
                     <div className="filter-section">
                         <div className="filter-header">
                             <h3>Lọc sản phẩm</h3>
-                            <button onClick={clearFilters} className="clear-filters-btn">
+                            <button onClick={clearFilters} className="clear-filters-btn" type="button">
                                 Xóa bộ lọc
                             </button>
                         </div>
 
-                        {/* Category Filter */}
-                        <div className="filter-group">
-                            <h4>Danh mục</h4>
-                            <select
-                                value={selectedCategory}
-                                onChange={(e) => setSelectedCategory(e.target.value)}
-                                className="filter-select"
-                            >
-                                <option value="">Tất cả danh mục</option>
-                                {categories.map((category) => (
-                                    <option key={category.id} value={category.id}>
-                                        {category.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        {/* Price Range Filter */}
-                        <div className="filter-group">
-                            <h4>Khoảng giá</h4>
-                            <div className="price-range">
-                                <input
-                                    type="number"
-                                    placeholder="Từ"
-                                    value={priceRange.min}
-                                    onChange={(e) => setPriceRange({ ...priceRange, min: e.target.value })}
-                                    className="price-input"
-                                />
-                                <span>-</span>
-                                <input
-                                    type="number"
-                                    placeholder="Đến"
-                                    value={priceRange.max}
-                                    onChange={(e) => setPriceRange({ ...priceRange, max: e.target.value })}
-                                    className="price-input"
-                                />
+                        {/* Filter Form - Wrap in form để handle submit */}
+                        <form onSubmit={applyFilters}>
+                            {/* Category Filter */}
+                            <div className="filter-group">
+                                <h4>Danh mục</h4>
+                                <select
+                                    value={tempCategory}
+                                    onChange={(e) => setTempCategory(e.target.value)}
+                                    className="filter-select"
+                                >
+                                    <option value="">Tất cả danh mục</option>
+                                    {categories.map((category) => (
+                                        <option key={category.id} value={category.id}>
+                                            {category.name}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
-                        </div>
 
-                        {/* Age Range Filter */}
-                        <div className="filter-group">
-                            <h4>Độ tuổi</h4>
-                            <select
-                                value={selectedAgeRange}
-                                onChange={(e) => setSelectedAgeRange(e.target.value)}
-                                className="filter-select"
-                            >
-                                <option value="">Tất cả độ tuổi</option>
-                                <option value="0-2">0-2 tuổi</option>
-                                <option value="3-5">3-5 tuổi</option>
-                                <option value="6-8">6-8 tuổi</option>
-                                <option value="9-12">9-12 tuổi</option>
-                                <option value="13+">13+ tuổi</option>
-                            </select>
-                        </div>
+                            {/* Price Range Filter */}
+                            <div className="filter-group">
+                                <h4>Khoảng giá</h4>
+                                <div className="price-range">
+                                    <input
+                                        type="number"
+                                        placeholder="Từ"
+                                        value={tempPriceRange.min}
+                                        onChange={(e) => setTempPriceRange({ ...tempPriceRange, min: e.target.value })}
+                                        className="price-input"
+                                    />
+                                    <span>-</span>
+                                    <input
+                                        type="number"
+                                        placeholder="Đến"
+                                        value={tempPriceRange.max}
+                                        onChange={(e) => setTempPriceRange({ ...tempPriceRange, max: e.target.value })}
+                                        className="price-input"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Age Range Filter */}
+                            <div className="filter-group">
+                                <h4>Độ tuổi</h4>
+                                <select
+                                    value={tempAgeRange}
+                                    onChange={(e) => setTempAgeRange(e.target.value)}
+                                    className="filter-select"
+                                >
+                                    <option value="">Tất cả độ tuổi</option>
+                                    <option value="0-2">0-2 tuổi</option>
+                                    <option value="3-5">3-5 tuổi</option>
+                                    <option value="6-8">6-8 tuổi</option>
+                                    <option value="9-12">9-12 tuổi</option>
+                                    <option value="13+">13+ tuổi</option>
+                                </select>
+                            </div>
+
+                            <div className="filter-actions">
+                                <button type="submit" className="apply-filters-btn">
+                                    Áp dụng
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </aside>
 
                 {/* Products Section */}
                 <main className="products-section">
-                    {/* Sort and Results Info */}
                     <div className="products-header">
                         <div className="results-info">
                             <h2>Tất cả sản phẩm ({products.length})</h2>
@@ -392,11 +441,7 @@ export default function Products() {
                             <label>Sắp xếp theo:</label>
                             <select
                                 value={`${sortBy}-${sortOrder}`}
-                                onChange={(e) => {
-                                    const [field, order] = e.target.value.split('-')
-                                    setSortBy(field)
-                                    setSortOrder(order)
-                                }}
+                                onChange={handleSortChange}
                                 className="sort-select"
                             >
                                 <option value="name-asc">Tên A-Z</option>
@@ -408,7 +453,6 @@ export default function Products() {
                         </div>
                     </div>
 
-                    {/* Products Grid */}
                     {currentProducts.length > 0 ? (
                         <>
                             <div className="products-grid">
@@ -436,7 +480,6 @@ export default function Products() {
                                 ))}
                             </div>
 
-                            {/* Pagination */}
                             {totalPages > 1 && (
                                 <div className="pagination">
                                     <button
@@ -470,7 +513,7 @@ export default function Products() {
                     ) : (
                         <div className="no-products">
                             <p>Không tìm thấy sản phẩm nào</p>
-                            <button onClick={clearFilters} className="btn">
+                            <button onClick={clearFilters} className="btn" type="button">
                                 Xóa bộ lọc
                             </button>
                         </div>
@@ -478,7 +521,6 @@ export default function Products() {
                 </main>
             </div>
 
-            {/* Footer */}
             <footer className="footer">
                 <p>© 2024 Cửa Hàng Đồ Chơi. Tất cả quyền được bảo lưu.</p>
             </footer>

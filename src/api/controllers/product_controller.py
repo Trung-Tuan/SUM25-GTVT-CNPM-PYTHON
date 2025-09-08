@@ -19,9 +19,15 @@ def get_service():
 @product_bp.route("/products",methods=["GET"])
 def get_all_products():
     try:
+        category_id = request.args.get("category_id") # request.args : obj chứa query parameter 
+        min_price = request.args.get("min_price")
+        max_price = request.args.get("max_price")
+        age_range = request.args.get("age_range")  # ví dụ "3-6"
+        sort_by = request.args.get("sort_by")      # ví dụ "price" hoặc "name"
+        sort_order = request.args.get("sort_order", "asc") 
         service = get_service()
 
-        product_list = service.get_all_products() # [<Product id=1>, <Product id=2>, <Product id=3>]
+        product_list = service.get_all_products_with_filter(category_id=category_id, min_price=min_price, max_price=max_price, age_range=age_range, sort_by=sort_by, sort_order=sort_order) # [<Product id=1>, <Product id=2>, <Product id=3>]
         # Lưu list sản phẩm vào biến product_list
         if not product_list:
             return jsonify({"success": False, "message": "Không tìm thấy sản phẩm nào"}), 404
@@ -52,6 +58,7 @@ def get_categories():
     try:
         service = get_service()
         categories = service.get_all_categories()
-        return jsonify({"success": True, "categories": categories}), 200
+        return jsonify({"success": True, "categories": categories}), 200 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+    
